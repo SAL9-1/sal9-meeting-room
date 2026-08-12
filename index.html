@@ -19,15 +19,15 @@
         </span>
       </a>
 
-      <div class="live-state" aria-label="현재 회의 상태">
+      <div class="live-state" data-state="online" aria-label="회의실 저장 상태">
         <span class="live-dot" aria-hidden="true"></span>
-        <span>동시 작업 중</span>
-        <strong>2명</strong>
+        <span>브라우저 회의실</span>
+        <strong id="storageStatus">자동 저장</strong>
       </div>
 
-      <div class="owner-chip" aria-label="현재 사용자 살구">
-        <span class="owner-avatar" aria-hidden="true">🍑</span>
-        <span><strong>살구</strong><small>최종 결재권자</small></span>
+      <div id="ownerChip" class="owner-chip" aria-label="현재 발신자">
+        <span id="ownerAvatar" class="owner-avatar" aria-hidden="true">🍑</span>
+        <span><strong id="ownerName">살구</strong><small id="ownerRole">최종 결재권자</small></span>
       </div>
     </header>
 
@@ -35,26 +35,10 @@
       <aside class="sidebar" aria-label="회의 채널">
         <div class="sidebar-heading">
           <span>회의 채널</span>
-          <button id="newMeetingButton" class="icon-button" type="button" aria-label="새 회의 안내">＋</button>
+          <button id="newMeetingButton" class="icon-button" type="button" aria-label="새 회의 채널 만들기">＋</button>
         </div>
 
-        <nav id="channelList" class="channel-list">
-          <button class="channel-button is-active" type="button" data-channel="studio">
-            <span class="channel-icon" aria-hidden="true">#</span>
-            <span class="channel-copy"><strong>스튜디오 운영</strong><small>조직·공정·결재</small></span>
-            <span class="channel-count" data-count-for="studio">0</span>
-          </button>
-          <button class="channel-button" type="button" data-channel="kangtaejin">
-            <span class="channel-icon" aria-hidden="true">#</span>
-            <span class="channel-copy"><strong>강태진 개편</strong><small>작품 P001</small></span>
-            <span class="channel-count" data-count-for="kangtaejin">0</span>
-          </button>
-          <button class="channel-button" type="button" data-channel="research">
-            <span class="channel-icon" aria-hidden="true">#</span>
-            <span class="channel-copy"><strong>크랙 연구</strong><small>플랫폼·시장조사</small></span>
-            <span class="channel-count" data-count-for="research">0</span>
-          </button>
-        </nav>
+        <nav id="channelList" class="channel-list" aria-live="polite"></nav>
 
         <section class="members" aria-labelledby="membersTitle">
           <div class="sidebar-heading" id="membersTitle">현재 작업자</div>
@@ -86,25 +70,28 @@
             </div>
             <p id="channelDescription">살구 스튜디오의 조직, 공정, 우선순위를 논의합니다.</p>
           </div>
-          <button id="resetButton" class="secondary-button" type="button">시연 초기화</button>
+          <div class="channel-actions">
+            <button id="editChannelButton" class="secondary-button" type="button">채널 수정</button>
+            <button id="deleteChannelButton" class="danger-button" type="button">채널 삭제</button>
+          </div>
         </header>
 
         <section id="messageList" class="message-list" aria-live="polite" aria-label="회의 메시지"></section>
 
         <form id="messageForm" class="composer">
-          <div class="pilot-notice">
+          <div class="pilot-notice server-notice">
             <div>
-              <strong>1차 시험 운영</strong>
-              <span>아래 입력은 이 브라우저에만 저장되는 화면 시연입니다. 실제 공유 코멘트는 GitHub 회의에 남겨주세요.</span>
+              <strong>가벼운 양팔 회의실</strong>
+              <span>채널과 코멘트는 이 브라우저에 저장되며, 같은 브라우저의 다른 탭에도 바로 반영됩니다.</span>
             </div>
-            <a href="https://github.com/SAL9-1/sal9-meeting-room/discussions/1" target="_blank" rel="noopener noreferrer">실제 GitHub 회의 열기</a>
+            <span id="syncState" class="sync-state">저장됨</span>
           </div>
 
           <div class="composer-meta">
-            <div class="sender-lock" aria-label="현재 발신자 살구, 로그인 계정으로 고정">
+            <div class="sender-lock" aria-label="현재 화면의 고정 발신자">
               <span>발신자</span>
-              <strong>🍑 살구</strong>
-              <small>로그인 계정으로 고정</small>
+              <strong id="senderIdentity">🍑 살구</strong>
+              <small>현재 화면에서 고정</small>
             </div>
             <label>
               <span>코멘트 종류</span>
@@ -130,7 +117,7 @@
 
           <div class="composer-footer">
             <span id="characterCount">0 / 1200</span>
-            <button class="send-button" type="submit">시연 코멘트 저장</button>
+            <button class="send-button" type="submit">코멘트 보내기</button>
           </div>
         </form>
       </main>
@@ -156,6 +143,26 @@
       </aside>
     </div>
   </div>
+
+  <dialog id="channelDialog" class="modal channel-modal">
+    <form id="channelForm" method="dialog">
+      <div class="eyebrow">회의 채널</div>
+      <h2 id="channelDialogTitle">새 채널 만들기</h2>
+      <label class="modal-field">
+        <span>채널 이름</span>
+        <input id="channelNameInput" type="text" maxlength="40" required>
+      </label>
+      <label class="modal-field">
+        <span>설명</span>
+        <textarea id="channelDescriptionInput" rows="3" maxlength="160" required></textarea>
+      </label>
+      <p id="channelFormError" class="form-error" role="alert"></p>
+      <div class="modal-actions">
+        <button id="cancelChannelButton" class="secondary-button" type="button">취소</button>
+        <button class="send-button" type="submit">저장</button>
+      </div>
+    </form>
+  </dialog>
 
   <div id="toast" class="toast" role="status" aria-live="polite"></div>
   <script src="app.js"></script>

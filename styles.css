@@ -35,7 +35,8 @@ body {
 
 button,
 textarea,
-select {
+select,
+input {
   font: inherit;
 }
 
@@ -47,6 +48,7 @@ select {
 button:focus-visible,
 textarea:focus-visible,
 select:focus-visible,
+input:focus-visible,
 a:focus-visible {
   outline: 3px solid rgba(116, 188, 232, 0.38);
   outline-offset: 2px;
@@ -139,6 +141,23 @@ a:focus-visible {
   box-shadow: 0 0 0 4px rgba(56, 168, 117, 0.12);
 }
 
+.live-state[data-state="connecting"] .live-dot,
+.live-state[data-state="locked"] .live-dot {
+  background: var(--yellow);
+  box-shadow: 0 0 0 4px rgba(217, 155, 34, 0.12);
+}
+
+.live-state[data-state="offline"] {
+  border-color: #f2d4d6;
+  background: #fff5f5;
+  color: #a64a51;
+}
+
+.live-state[data-state="offline"] .live-dot {
+  background: #c95e66;
+  box-shadow: 0 0 0 4px rgba(201, 94, 102, 0.12);
+}
+
 .owner-chip {
   display: flex;
   align-items: center;
@@ -159,6 +178,20 @@ a:focus-visible {
   width: 38px;
   height: 38px;
   background: var(--peach-soft);
+}
+
+.logout-button {
+  padding: 6px 8px;
+  border: 0;
+  border-radius: 7px;
+  background: transparent;
+  color: var(--muted);
+  font-size: 10px;
+}
+
+.logout-button:hover {
+  background: #f1f2f6;
+  color: var(--text);
 }
 
 .workspace {
@@ -391,6 +424,31 @@ a:focus-visible {
   border-color: #bfc4d2;
 }
 
+.channel-actions {
+  display: flex;
+  flex: 0 0 auto;
+  gap: 7px;
+}
+
+.danger-button {
+  padding: 8px 12px;
+  border: 1px solid #efd4d6;
+  border-radius: 9px;
+  background: #fff7f7;
+  color: #aa4e55;
+  font-size: 12px;
+}
+
+.danger-button:hover:not(:disabled) {
+  border-color: #dfafb3;
+  background: #fff0f1;
+}
+
+button:disabled {
+  cursor: not-allowed;
+  opacity: 0.52;
+}
+
 .message-list {
   min-height: 0;
   overflow-y: auto;
@@ -409,6 +467,17 @@ a:focus-visible {
 
 .message:hover {
   background: #fafbfc;
+}
+
+.message.is-reply {
+  margin-left: 34px;
+  border-left: 2px solid #dce8f4;
+}
+
+.reply-label {
+  margin-bottom: 4px;
+  color: #6e8294;
+  font-size: 11px;
 }
 
 .message-avatar {
@@ -514,6 +583,10 @@ a:focus-visible {
   text-decoration: underline;
 }
 
+.message-actions .danger-text {
+  color: #b45f66;
+}
+
 .empty-state {
   height: 100%;
   display: grid;
@@ -580,6 +653,15 @@ a:focus-visible {
 
 .pilot-notice a:hover {
   background: #cee7f6;
+}
+
+.sync-state {
+  flex: 0 0 auto;
+  padding: 6px 9px;
+  border-radius: 999px;
+  background: #dceef9;
+  color: #285b7a;
+  font-weight: 700;
 }
 
 .composer-meta {
@@ -793,6 +875,17 @@ a:focus-visible {
   font-size: 11px;
 }
 
+.pending-button {
+  width: 100%;
+  border: 0;
+  color: inherit;
+  text-align: left;
+}
+
+.pending-button:hover {
+  background: #f0f3f8;
+}
+
 .pending-empty {
   padding: 12px 0 3px;
   color: var(--muted);
@@ -820,6 +913,94 @@ a:focus-visible {
 .toast.is-visible {
   transform: translateY(0);
   opacity: 1;
+}
+
+.modal {
+  width: min(440px, calc(100% - 28px));
+  padding: 0;
+  border: 1px solid var(--line);
+  border-radius: 20px;
+  background: var(--surface);
+  color: var(--text);
+  box-shadow: 0 24px 80px rgba(32, 37, 52, 0.24);
+}
+
+.modal::backdrop {
+  background: rgba(31, 36, 50, 0.46);
+  backdrop-filter: blur(3px);
+}
+
+.modal form {
+  display: grid;
+  gap: 14px;
+  padding: 28px;
+}
+
+.modal h2,
+.modal p {
+  margin: 0;
+}
+
+.modal h2 {
+  font-size: 21px;
+}
+
+.modal p {
+  color: var(--muted);
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.modal-mark {
+  width: 48px;
+  height: 48px;
+  display: grid;
+  place-items: center;
+  border-radius: 15px;
+  background: var(--peach-soft);
+  font-size: 25px;
+}
+
+.modal-field {
+  display: grid;
+  gap: 6px;
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.modal-field input,
+.modal-field textarea {
+  width: 100%;
+  padding: 11px 12px;
+  border: 1px solid var(--line-strong);
+  border-radius: 10px;
+  outline: 0;
+  color: var(--text);
+  resize: vertical;
+}
+
+.modal-field input:focus,
+.modal-field textarea:focus {
+  border-color: #9cccec;
+  box-shadow: 0 0 0 3px rgba(116, 188, 232, 0.13);
+}
+
+.form-error {
+  min-height: 18px;
+  color: #b04f57 !important;
+  font-weight: 700;
+}
+
+.modal-submit {
+  width: 100%;
+  padding: 11px 15px;
+}
+
+.modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
 }
 
 .sr-only {
@@ -936,9 +1117,18 @@ a:focus-visible {
     font-size: 11px;
   }
 
-  .secondary-button,
+  .channel-actions .secondary-button,
   .meeting-badge {
     display: none;
+  }
+
+  .channel-actions {
+    gap: 4px;
+  }
+
+  .danger-button {
+    padding: 7px 9px;
+    font-size: 11px;
   }
 
   .message-list {
@@ -968,6 +1158,15 @@ a:focus-visible {
     padding: 10px;
   }
 
+  .pilot-notice {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .sync-state {
+    align-self: flex-end;
+  }
+
   .quick-mentions {
     width: 100%;
     margin-left: 0;
@@ -979,5 +1178,13 @@ a:focus-visible {
 
   .message-field textarea {
     min-height: 62px;
+  }
+
+  .logout-button {
+    display: none;
+  }
+
+  .modal form {
+    padding: 22px;
   }
 }
