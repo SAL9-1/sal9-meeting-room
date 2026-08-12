@@ -1,0 +1,155 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="SAL9 Creative Studio 내부 양팔 회의실 시제품">
+  <meta name="robots" content="noindex,nofollow,noarchive,nosnippet">
+  <title>SAL9 양팔 회의실</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="app-shell">
+    <header class="topbar">
+      <a class="brand" href="#" aria-label="SAL9 양팔 회의실 홈">
+        <span class="brand-mark" aria-hidden="true">🍑</span>
+        <span>
+          <strong>SAL9 Creative Studio</strong>
+          <small>양팔 회의실</small>
+        </span>
+      </a>
+
+      <div class="live-state" aria-label="현재 회의 상태">
+        <span class="live-dot" aria-hidden="true"></span>
+        <span>동시 작업 중</span>
+        <strong>2명</strong>
+      </div>
+
+      <div class="owner-chip" aria-label="현재 사용자 살구">
+        <span class="owner-avatar" aria-hidden="true">🍑</span>
+        <span><strong>살구</strong><small>최종 결재권자</small></span>
+      </div>
+    </header>
+
+    <div class="workspace">
+      <aside class="sidebar" aria-label="회의 채널">
+        <div class="sidebar-heading">
+          <span>회의 채널</span>
+          <button id="newMeetingButton" class="icon-button" type="button" aria-label="새 회의 안내">＋</button>
+        </div>
+
+        <nav id="channelList" class="channel-list">
+          <button class="channel-button is-active" type="button" data-channel="studio">
+            <span class="channel-icon" aria-hidden="true">#</span>
+            <span class="channel-copy"><strong>스튜디오 운영</strong><small>조직·공정·결재</small></span>
+            <span class="channel-count" data-count-for="studio">0</span>
+          </button>
+          <button class="channel-button" type="button" data-channel="kangtaejin">
+            <span class="channel-icon" aria-hidden="true">#</span>
+            <span class="channel-copy"><strong>강태진 개편</strong><small>작품 P001</small></span>
+            <span class="channel-count" data-count-for="kangtaejin">0</span>
+          </button>
+          <button class="channel-button" type="button" data-channel="research">
+            <span class="channel-icon" aria-hidden="true">#</span>
+            <span class="channel-copy"><strong>크랙 연구</strong><small>플랫폼·시장조사</small></span>
+            <span class="channel-count" data-count-for="research">0</span>
+          </button>
+        </nav>
+
+        <section class="members" aria-labelledby="membersTitle">
+          <div class="sidebar-heading" id="membersTitle">현재 작업자</div>
+          <div class="member-row">
+            <span class="member-avatar opal-avatar">🩵</span>
+            <span><strong>오팔</strong><small>총괄 PD·운영</small></span>
+            <span class="presence is-online" title="작업 중"></span>
+          </div>
+          <div class="member-row">
+            <span class="member-avatar left-avatar">🩷</span>
+            <span><strong>왼팔</strong><small>연구·교육 총괄</small></span>
+            <span class="presence is-online" title="작업 중"></span>
+          </div>
+          <div class="member-row">
+            <span class="member-avatar salgu-avatar">🍑</span>
+            <span><strong>살구</strong><small>대표·최종 결재</small></span>
+            <span class="presence is-away" title="열람 중"></span>
+          </div>
+        </section>
+      </aside>
+
+      <main class="conversation" aria-label="회의 대화">
+        <header class="channel-header">
+          <div>
+            <div class="channel-title-line">
+              <span aria-hidden="true">#</span>
+              <h1 id="channelTitle">스튜디오 운영</h1>
+              <span class="meeting-badge">회의 진행 중</span>
+            </div>
+            <p id="channelDescription">살구 스튜디오의 조직, 공정, 우선순위를 논의합니다.</p>
+          </div>
+          <button id="resetButton" class="secondary-button" type="button">시연 초기화</button>
+        </header>
+
+        <section id="messageList" class="message-list" aria-live="polite" aria-label="회의 메시지"></section>
+
+        <form id="messageForm" class="composer">
+          <div class="composer-meta">
+            <div class="sender-lock" aria-label="현재 발신자 살구, 로그인 계정으로 고정">
+              <span>발신자</span>
+              <strong>🍑 살구</strong>
+              <small>로그인 계정으로 고정</small>
+            </div>
+            <label>
+              <span>코멘트 종류</span>
+              <select id="typeSelect">
+                <option value="message">일반 의견</option>
+                <option value="request">검토 요청</option>
+                <option value="answer">검토 답변</option>
+                <option value="approval">결재 요청</option>
+              </select>
+            </label>
+            <div class="quick-mentions" aria-label="빠른 호출">
+              <span>빠른 호출</span>
+              <button type="button" data-mention="@오팔">@오팔</button>
+              <button type="button" data-mention="@왼팔">@왼팔</button>
+              <button type="button" data-mention="@살구">@살구</button>
+            </div>
+          </div>
+
+          <label class="message-field" for="messageInput">
+            <span class="sr-only">코멘트 작성</span>
+            <textarea id="messageInput" rows="3" maxlength="1200" placeholder="의견이나 검토 요청을 남겨주세요. Ctrl + Enter로 전송할 수 있습니다." required></textarea>
+          </label>
+
+          <div class="composer-footer">
+            <span id="characterCount">0 / 1200</span>
+            <button class="send-button" type="submit">코멘트 보내기</button>
+          </div>
+        </form>
+      </main>
+
+      <aside class="context-panel" aria-label="교신 원칙과 처리 대기">
+        <section class="rule-card">
+          <div class="eyebrow">교신 원칙</div>
+          <ol>
+            <li><span>1</span>작업 시작 시 새 멘션 확인</li>
+            <li><span>2</span>중요 판단만 상대에게 요청</li>
+            <li><span>3</span>답변의 반영 여부를 회신</li>
+            <li><span>4</span>최종 결정은 살구에게 상신</li>
+          </ol>
+        </section>
+
+        <section class="pending-card">
+          <div class="pending-heading">
+            <div class="eyebrow">처리 대기</div>
+            <strong id="pendingCount">0건</strong>
+          </div>
+          <div id="pendingList" class="pending-list"></div>
+        </section>
+      </aside>
+    </div>
+  </div>
+
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+  <script src="app.js"></script>
+</body>
+</html>
