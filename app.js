@@ -346,7 +346,7 @@ messageForm.addEventListener("submit", (event) => {
   typeSelect.value = "message";
   updateCharacterCount();
   renderAll();
-  showToast("코멘트를 회의실에 남겼습니다.");
+  showToast("시연 코멘트를 이 브라우저에 저장했습니다.");
 });
 
 document.getElementById("resetButton").addEventListener("click", () => {
