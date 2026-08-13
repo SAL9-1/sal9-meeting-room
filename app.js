@@ -4,7 +4,8 @@ const LEGACY_STORAGE_KEY = "sal9-meeting-room-v1";
 const people = {
   salgu: { name: "살구", icon: "🍑", role: "대표·최종 결재" },
   opal: { name: "오팔", icon: "🩵", role: "총괄 PD·운영" },
-  left: { name: "왼팔", icon: "🩷", role: "연구·교육 총괄" }
+  left: { name: "왼팔", icon: "🩷", role: "연구·교육 총괄" },
+  web: { name: "웹개발팀", icon: "🌐", role: "웹·인터랙티브개발" }
 };
 
 const typeLabels = {
@@ -21,7 +22,7 @@ const defaultChannels = [
 ];
 
 const actorParam = new URLSearchParams(location.search).get("actor");
-const currentActor = ["opal", "left"].includes(actorParam) ? actorParam : "salgu";
+const currentActor = ["opal", "left", "web"].includes(actorParam) ? actorParam : "salgu";
 const isOwner = currentActor === "salgu";
 const broadcast = "BroadcastChannel" in window ? new BroadcastChannel("sal9-meeting-room") : null;
 
